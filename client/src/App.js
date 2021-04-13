@@ -22,35 +22,27 @@ const styles = theme =>({
   }
 })
 
-const customers = [{
-  'id':1,
-  'image': 'http://placeimg.com/64/64/1', 
-  'name': '홍길동',
-  'birthday':'281479',
-  'gender':'남자',
-  'job':'직장인'
-},
-{
-  'id':2,
-  'image': 'http://placeimg.com/64/64/2', 
-  'name': '홍길동',
-  'birthday':'281472349',
-  'gender':'남자',
-  'job':'프로그래머'
-
-},
-{
-  'id':3,
-  'image': 'http://placeimg.com/64/64/3', 
-  'name': '홍길동',
-  'birthday':'281423479',
-  'gender':'여자',
-  'job':'학생'
-
-}
-]
-
+// 왭 서비스가 동작 후 사용자의 요청에 따라 필요할 때 서버의 접근해 대이터를 가져올 수 있다.
 class App extends Component {
+
+  // 사용자의 요청에 따라 데이터가 변경될 때
+  state = {
+    customers:""
+  }
+
+  componentDidMount(){
+    this.callApi()
+    .then(res=> this.setState({customers: res}))
+    .catch(err => console.log(err))
+  }
+
+  callApi = async() => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body
+  }
+
+  // props 변경될 수 없는 데이터 일때
   render(){
     const { classes } = this.props;
       return (
@@ -68,7 +60,7 @@ class App extends Component {
           </TableHead>
           <TableBody>
             {
-              customers.map(c=> {
+              this.state.customers ? this.state.customers.map(c=> {
                 return (
                   <Customer
                   key={c.id}
@@ -80,8 +72,8 @@ class App extends Component {
                   job={c.job}
                   />  
                   );
-                })
-          }
+                }) : ""
+          } 
           </TableBody>
         </Table>
         
