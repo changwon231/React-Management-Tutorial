@@ -7,9 +7,13 @@ import TableHead from '@material-ui/core/TableHead';
 import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/core/styles';
 import { render } from '@testing-library/react';
 import { Component } from 'react';
+//import { response } from 'express';
+
+
 
 const styles = theme =>({
   root: {
@@ -19,18 +23,44 @@ const styles = theme =>({
   }, 
   table: {
     minWidth: 1080
+  },
+  progress:{
+    margin: theme.spacing.unit * 2
   }
 })
+
+/* react 라이브러리 순서
+
+  1) constructor()
+
+  2) componentWillMount()
+
+  3) render()
+
+  4) componentDidMount()
+
+ */
+/*
+
+상태가 변할때 재구성 하기 위해 
+우리는 상태만 잘 관리하면 된다.
+  props or state => shouldComponentUpdate()
+
+*/
+
+
 
 // 왭 서비스가 동작 후 사용자의 요청에 따라 필요할 때 서버의 접근해 대이터를 가져올 수 있다.
 class App extends Component {
 
   // 사용자의 요청에 따라 데이터가 변경될 때
   state = {
-    customers:""
+    customers:"",
+    completed: 0 // < 프로그래스 바는 0 ~ 100 까지 정수로 그림을 나타내기 때문
   }
 
   componentDidMount(){
+    this.timer = setInterval(this.progress, 20);
     this.callApi()
     .then(res=> this.setState({customers: res}))
     .catch(err => console.log(err))
@@ -41,6 +71,12 @@ class App extends Component {
     const body = await response.json();
     return body
   }
+
+  progress = () => {
+    const {completed} = this.state;
+    this.setState({ completed: completed >= 100 ? 0 : completed + 1});
+  }
+
 
   // props 변경될 수 없는 데이터 일때
   render(){
@@ -72,7 +108,12 @@ class App extends Component {
                   job={c.job}
                   />  
                   );
-                }) : ""
+                }) : // 로딩중일때
+                <TableRow>
+                  <TableCell colSpan="6" align="center">
+                    <CircularProgress className={classes.progress} variant="determinate" value={this.state.completed}/>
+                  </TableCell>
+                </TableRow>
           } 
           </TableBody>
         </Table>
