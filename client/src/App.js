@@ -25,7 +25,7 @@ const styles = theme =>({
     minWidth: 1080
   },
   progress:{
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing (2)
   }
 })
 
@@ -61,9 +61,9 @@ class App extends Component {
 
   componentDidMount(){
     this.timer = setInterval(this.progress, 20);
-//    this.callApi()
-//     .then(res=> this.setState({customers: res}))
-//      .catch(err => console.log(err))
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err))
   }
 
   callApi = async() => {
