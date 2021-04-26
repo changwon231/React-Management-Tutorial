@@ -55,9 +55,28 @@ const styles = theme =>({
 class App extends Component {
 
   // 사용자의 요청에 따라 데이터가 변경될 때
-  state = {
-    customers:"",
-    completed: 0 // < 프로그래스 바는 0 ~ 100 까지 정수로 그림을 나타내기 때문
+  // state = {
+  //   customers:"",
+  //   completed: 0 // < 프로그래스 바는 0 ~ 100 까지 정수로 그림을 나타내기 때문
+  // }
+
+  constructor(props){
+    super(props);
+    this.state = {
+      customers: '',
+      completed: 0
+    }
+  }
+
+  stateRefresh = () => {
+    this.setState({
+      customers: '',
+      completed:0
+    })
+
+    this.callApi()
+    .then(res => this.setState({customers: res}))
+    .catch(err => console.log(err))
   }
 
   componentDidMount(){
@@ -120,7 +139,7 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd/>
+        <CustomerAdd stateRefresh={this.stateRefresh}/>
       </div>
     );
     
