@@ -14,19 +14,17 @@ import { render } from '@testing-library/react';
 import { Component } from 'react';
 //import { response } from 'express';
 
-
-
 const styles = theme =>({
   root: {
     width: '100%',
-    marginTop: theme.spacing (1),
+    marginTop: theme.spacing (3),
     overflowX:"auto"
   }, 
   table: {
     minWidth: 1080
   },
   progress:{
-    margin: theme.spacing (2)
+    margin: theme.spacing (9)
   }
 })
 
@@ -48,8 +46,6 @@ const styles = theme =>({
   props or state => shouldComponentUpdate()
 
 */
-
-
 
 // 왭 서비스가 동작 후 사용자의 요청에 따라 필요할 때 서버의 접근해 대이터를 가져올 수 있다.
 class App extends Component {

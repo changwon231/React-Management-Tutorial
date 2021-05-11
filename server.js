@@ -26,7 +26,7 @@ const upload = multer({dest: './upload'})
 
 app.get('/api/customers',(req,res)=>{
     connection.query(
-      "SELECT * FROM CUSTOMER isDeleted = 0",
+      "SELECT * FROM CUSTOMER WHERE isDeleted = 0",
       (err, rows, fields) => {
         res.send(rows);
       }  
